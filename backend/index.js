@@ -22,6 +22,16 @@ let persons = [
     name: "Mary Poppendieck",
     number: "39-23-6423122",
   },
+  {
+    id: 5,
+    name: "Mary Poppendieck",
+    number: "39-23-6423122",
+  },
+  {
+    id: 6,
+    name: "Mary Poppendieck",
+    number: "39-23-6423122",
+  },
 ];
 
 app.get("/", (request, response) => {
@@ -45,10 +55,16 @@ app.get("/info", (request, response) => {
 app.get("/api/persons/:id", (req, res) => {
   const id = Number(req.params.id);
   const person = persons.find((p) => p.id === id);
-  console.log(person);
   person
     ? res.json(person)
     : res.status(404).json({ error: "content missing" });
+});
+
+app.delete("/api/persons/:id", (req, res) => {
+  const id = Number(req.params.id);
+  persons = persons.filter((person) => person.id !== id);
+
+  res.status(204).end();
 });
 
 const PORT = 3001;
