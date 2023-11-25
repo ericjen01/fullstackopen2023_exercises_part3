@@ -1,7 +1,41 @@
 const express = require("express");
 const app = express();
+const morgan = require("morgan");
 
+/*const reqLogger = (req, res) => {
+    console.log('body: ', req.body);
+    res.status(404).send({ error: 'endpoint not known' });
+  };*/
+
+const generateId = () => {
+  const maxId = persons.length > 0 ? Math.max(...persons.map((p) => p.id)) : 0;
+  return maxId + 1;
+};
+
+//app.use(reqLogger);
+//app.use(morgan('tiny'))
+//console.log('morgan('tiny'): ', morgan('tiny'));
 app.use(express.json());
+app.use(
+  morgan((tokens, req, res) => {
+    console.log("tokens: ", tokens);
+    return [
+      "method:",
+      tokens.method(req, res),
+      ", url:",
+      tokens.url(req, res),
+      ", status:",
+      tokens.status(req, res),
+      ", content-length: ",
+      tokens.res(req, res, "content-length"),
+      ", response time:",
+      tokens["response-time"](req, res),
+      " ms",
+      ", body: ",
+      JSON.stringify(req.body),
+    ].join("");
+  })
+);
 
 let persons = [
   {
@@ -68,14 +102,9 @@ app.delete("/api/persons/:id", (req, res) => {
   res.status(204).end();
 });
 
-const generateId = () => {
-  const maxId = persons.length > 0 ? Math.max(...persons.map((p) => p.id)) : 0;
-  return maxId + 1;
-};
-
 app.post("/api/persons", (req, res) => {
   const body = req.body;
-  console.log("req.body: ", req.body);
+  //console.log('req.body: ', req.body);
 
   if (!body.name || !body.number) {
     return res.status(400).json({
