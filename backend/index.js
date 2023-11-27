@@ -1,41 +1,15 @@
 const express = require("express");
-const app = express();
 const morgan = require("morgan");
+const cors = require("cors");
+const app = express();
 
-/*const reqLogger = (req, res) => {
-    console.log('body: ', req.body);
-    res.status(404).send({ error: 'endpoint not known' });
-  };*/
+morgan.token("body", (req) => {
+  return JSON.stringify(req.body);
+});
 
-const generateId = () => {
-  const maxId = persons.length > 0 ? Math.max(...persons.map((p) => p.id)) : 0;
-  return maxId + 1;
-};
-
-//app.use(reqLogger);
-//app.use(morgan('tiny'))
-//console.log('morgan('tiny'): ', morgan('tiny'));
+app.use(cors());
 app.use(express.json());
-app.use(
-  morgan((tokens, req, res) => {
-    console.log("tokens: ", tokens);
-    return [
-      "method:",
-      tokens.method(req, res),
-      ", url:",
-      tokens.url(req, res),
-      ", status:",
-      tokens.status(req, res),
-      ", content-length: ",
-      tokens.res(req, res, "content-length"),
-      ", response time:",
-      tokens["response-time"](req, res),
-      " ms",
-      ", body: ",
-      JSON.stringify(req.body),
-    ].join("");
-  })
-);
+app.use(morgan("method-:method, status-:status, url-:url, body-:body"));
 
 let persons = [
   {
@@ -58,17 +32,12 @@ let persons = [
     name: "Mary Poppendieck",
     number: "39-23-6423122",
   },
-  {
-    id: 5,
-    name: "Mary Poppendieck",
-    number: "39-23-6423122",
-  },
-  {
-    id: 6,
-    name: "Mary Poppendieck",
-    number: "39-23-6423122",
-  },
 ];
+
+const generateId = () => {
+  const maxId = persons.length > 0 ? Math.max(...persons.map((p) => p.id)) : 0;
+  return maxId + 1;
+};
 
 app.get("/", (request, response) => {
   response.send("<h1>Hello World!</h1>");
@@ -96,6 +65,16 @@ app.get("/api/persons/:id", (req, res) => {
     : res.status(404).json({ error: "content missing" });
 });
 
+app.put("/api/persons/:id", (req, res) => {
+  const personToChange = {
+    name: req.name,
+    number: req.number,
+  };
+  console.log("personToChange: ", personToChange);
+  persons.map((p) => (p.name === req.name ? personToChange : p));
+  res.json(personToChange);
+});
+
 app.delete("/api/persons/:id", (req, res) => {
   const id = Number(req.params.id);
   persons = persons.filter((person) => person.id !== id);
@@ -104,7 +83,6 @@ app.delete("/api/persons/:id", (req, res) => {
 
 app.post("/api/persons", (req, res) => {
   const body = req.body;
-  //console.log('req.body: ', req.body);
 
   if (!body.name || !body.number) {
     return res.status(400).json({
