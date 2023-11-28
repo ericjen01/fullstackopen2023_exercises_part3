@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/api/persons'
+//const baseUrl = 'http://localhost:3001/api/persons'
+const baseUrl = '/api/persons'  //see 3-B serving static files from the backend
+
 
 const getPersons = () => {
     const respns = axios.get(baseUrl)

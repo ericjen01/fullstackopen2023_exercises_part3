@@ -10,6 +10,7 @@ morgan.token("body", (req) => {
 app.use(cors());
 app.use(express.json());
 app.use(morgan("method-:method, status-:status, url-:url, body-:body"));
+app.use(express.static("dist"));
 
 let persons = [
   {
@@ -67,11 +68,11 @@ app.get("/api/persons/:id", (req, res) => {
 
 app.put("/api/persons/:id", (req, res) => {
   const personToChange = {
-    name: req.name,
-    number: req.number,
+    name: req.body.name,
+    number: req.body.number,
   };
   console.log("personToChange: ", personToChange);
-  persons.map((p) => (p.name === req.name ? personToChange : p));
+  persons.map((p) => (p.name === req.body.name ? personToChange : p));
   res.json(personToChange);
 });
 

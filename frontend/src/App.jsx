@@ -73,8 +73,9 @@ const App = () => {
       personsService
       .updatePerson(dupoName.id, newPersonToAdd)
       .then(returnedPerson => {
+        console.log("newPersonToAdd: ", newPersonToAdd)
         setPersons(persons.map(p=>p.name === returnedPerson.name? returnedPerson : p))
-        setMessage({content:`number updated for ${newName}`, type:"notification"})
+        setMessage({content:`number '${returnedPerson.number}' updated for ${newName}`, type:"notification"})
         timeout()
         return
       })
