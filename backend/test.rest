@@ -3,5 +3,7 @@ Content-Type: application/json
 
 {
     "name": "samdple",
-    "number": "ydd"
+    "number": "000-000"
 }
+#####
+DELETE http://localhost:3001/api/persons/6566ff02e7cbf275890a8496
