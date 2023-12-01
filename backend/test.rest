@@ -6,4 +6,4 @@ Content-Type: application/json
     "number": "000-000"
 }
 #####
-DELETE http://localhost:3001/api/persons/6566ff02e7cbf275890a8496
+GET http://localhost:3001/api/persons/6566ff02e7cbf275890a8496

@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
-//const cors = require("cors");
+const cors = require("cors");
 const Person = require("./models/person");
 const app = express();
 
@@ -9,7 +9,7 @@ morgan.token("body", (req) => {
   return JSON.stringify(req.body);
 });
 
-//app.use(cors());
+app.use(cors());
 app.use(express.json());
 app.use(morgan("method-:method, status-:status, url-:url, body-:body"));
 app.use(express.static("dist"));
@@ -26,10 +26,10 @@ app.get("/api/persons", (req, res) => {
 });
 
 app.get("/api/persons/:id", (req, res, next) => {
-  const id = req.params.id;
+  const id = req.params.id;  
   const person = Person.findById(id)
     .then((p) => {p
-      ? res.json(person)
+      ? res.json(p)
       : res.status(404).json({ err: "content missing" }).end();
     })
     .catch((err) => next(err));

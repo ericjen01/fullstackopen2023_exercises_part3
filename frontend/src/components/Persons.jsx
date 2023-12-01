@@ -1,13 +1,20 @@
-const Persons = ({personsToShow, removePerson}) =>(
+const Persons = ({ personsToShow, removePerson }) => (
     <ul>
         {
-            personsToShow.map((p,i) => (
+            personsToShow.map((p, i) => (
                 <li key={i}>
-                    {`${p.name} ${p.number} `}
+                    <a href={`api/persons/${p.id}`}
+                        style={{
+                            textDecoration: "none",
+                            color: "darkmagenta"
+                        }}
+                    >
+                        {`${p.name} ${p.number}`}
+                    </a>
                     <button onClick={() => removePerson(p.id)}>Delete</button>
                 </li>
-            )            
-           
+            )
+
             )
         }
     </ul>
