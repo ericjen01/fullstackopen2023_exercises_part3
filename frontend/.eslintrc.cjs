@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  env: { browser: true, es2020: true },
+  env: { browser: true, es2020: true, note: true },
   extends: [
     "eslint:recommended",
     "plugin:react/recommended",
@@ -17,5 +17,21 @@ module.exports = {
       "warn",
       { allowConstantExport: true },
     ],
+    'indent': [
+      'error',
+      2
+  ],
+  'linebreak-style': [
+      'error',
+      'unix'
+  ],
+  'quotes': [
+      'error',
+      'single'
+  ],
+  'semi': [
+      'error',
+      'never'
+  ],
   },
 };

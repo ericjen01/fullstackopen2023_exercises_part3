@@ -22,6 +22,7 @@ app.get("/api/persons", (req, res) => {
 
 app.get("/api/persons/:id", (req, res, next) => {
   const id = req.params.id;  
+  // eslint-disable-next-line no-unused-vars
   const person = Person.findById(id)
     .then((p) => {p
       ? res.json(p)
@@ -61,7 +62,7 @@ app.put("/api/persons/:id", (req, res, next) => {
 app.delete("/api/persons/:id", (req, res, next) => {
   const id = req.params.id;
   Person.findByIdAndDelete(id)
-    .then((result) => { res.status(204).end();})
+    .then(() => { res.status(204).end();})
     .catch((err) => next(err));
 });
 
@@ -72,6 +73,7 @@ const unknownEndpoint = (req, res) => {res
 
 app.use(unknownEndpoint);
 
+// eslint-disable-next-line no-undef
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
