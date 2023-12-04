@@ -55,6 +55,8 @@ const PhonebookPage = () => {
                 .then(returnedPerson => {
                     setPersons(persons.concat(returnedPerson))
                     setMessage({ content: `'${newName}' has been added to phonebook`, type: "notification" })
+                }).catch(err => {
+                    setMessage({ content: err.response.data.error, type: "error" })
                 })
             timeout()
             return

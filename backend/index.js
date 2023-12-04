@@ -14,11 +14,6 @@ app.use(express.json());
 app.use(morgan("method-:method, status-:status, url-:url, body-:body"));
 app.use(express.static("dist"));
 
-const generateId = () => {
-  const maxId = persons.length > 0 ? Math.max(...persons.map((p) => p.id)) : 0;
-  return maxId + 1;
-};
-
 app.get("/api/persons", (req, res) => {
   Person.find({}).then((persons) => {
     res.json(persons);
@@ -35,16 +30,19 @@ app.get("/api/persons/:id", (req, res, next) => {
     .catch((err) => next(err));
 });
 
-app.post("/api/persons", (req, res, next) => {
+app.post('/api/persons', (req, res, next) => {
   const body = req.body;
+
   const newPerson = new Person({
-    name:   body.name,
+    name: body.name,
     number: body.number,
   });
 
   newPerson
     .save()
-    .then((savedPerson) => { res.json(savedPerson)})
+    .then((savedPerson) => {
+      res.json(savedPerson);
+    })
     .catch((err) => next(err));
 });
 
@@ -74,19 +72,23 @@ const unknownEndpoint = (req, res) => {res
 
 app.use(unknownEndpoint);
 
+/*
 const errorHandler = (err, req, res, next) => {
-  console.err(err.message);
+  //console.log(err.message);
 
   if (err.name === "CastError"){
     return 
     res.status(400)
     .send({ err: "malformatted id" });
+  }else if(err.name === 'ValidationError'){
+    return 
+    res.status(400)
+    .send({ err: err.message })
   }
-
   next(err);
 };
 
-app.use(errorHandler);
+app.use(errorHandler);*/
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {

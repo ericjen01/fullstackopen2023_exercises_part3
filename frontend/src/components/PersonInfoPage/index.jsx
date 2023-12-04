@@ -28,5 +28,4 @@ const PersonInfoPage = () => {
   )
 }
 
-
 export default PersonInfoPage
